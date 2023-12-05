@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import Colors from "../constans/Colors";
 import fonts from "../constans/fonts";
 import { Ionicons } from '@expo/vector-icons';
+import images from "../constans/images";
 
 const MovieCard =() => {
     const [liked, setLiked] = useState(false)
@@ -13,8 +14,9 @@ const MovieCard =() => {
         <View style={styles.container}>
             <View style={styles.imdbContainer} >
             <Image
-                source={require("../../assets/images/imdb.png")}
-                style={styles.imdbImage} />
+                source={images.IMDB}
+                        resizeMode="cover"
+                        style={styles.imdbImage}   />
                 <Text style={styles.imdbRating}> 9.9</Text>
          </View>
          <TouchableOpacity onPress={() => setLiked(!liked)}>

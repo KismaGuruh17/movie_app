@@ -1,17 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
 import Colors from '../constans/Colors';
 import fonts from '../constans/fonts';
 import GenreCard from '../components/GenreCard';
 import MovieCard from '../components/MovieCard';
 import ItemSeparator from '../components/ItemSeparator';
+import { getNowPlayingMovies } from '../services/MovieService';
 
 
-const Genres = ["All", "Action", "Romance", "Horor", "Sci-fi"];
+
+const Genres = ["All", "Action", "Romance", "Horror", "Sci-fi"];
 
 const HomeScreen =() => {
-  const [activeGenre, setActiveGenre] = useState("all")
+  const [activeGenre, setActiveGenre] = useState("all");
+  const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
+  
+  useEffect(() => { getNowPlayingMovies().then(movieResponse => setNowPlayingMovies(movieResponse.data))
+  }, []);
+  
 
   return (
     <ScrollView style={styles.container}>
@@ -40,21 +47,21 @@ const HomeScreen =() => {
          <GenreCard
           genreName={item}
           active={item === activeGenre ? true: false}
-          onPress={setActiveGenre}
+          onPress={() => setActiveGenre(item)}
           />
           )}
         />
       </View>
       <View>
-        <FlatList 
-        data={Genres}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item }
-        ItemSeparatorComponent={() => <ItemSeparator width={20} />}
-        ListHeaderComponent={() => <ItemSeparator width={20} />}
-        ListFooterComponent={() => <ItemSeparator width={20} />}
-        renderItem={({item}) => <MovieCard />}
+      <FlatList
+          data={Genres} 
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => item.toString()}
+          ItemSeparatorComponent={() => <ItemSeparator width={20} />}
+          ListHeaderComponent={() => <ItemSeparator width={20} />}
+          ListFooterComponent={() => <ItemSeparator width={20} />}
+          renderItem={({ item }) => <MovieCard data={item} />} // Pass movie data to MovieCard
         />
       </View>
     </ScrollView>
