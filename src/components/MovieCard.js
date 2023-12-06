@@ -1,24 +1,33 @@
 import React, {useState} from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from "react-native";
 import Colors from "../constans/Colors";
 import fonts from "../constans/fonts";
 import { Ionicons } from '@expo/vector-icons';
 import images from "../constans/images";
 
-const MovieCard =() => {
+
+const MovieCard =({title, language, voteAverage, voteCount,poster}) => {
     const [liked, setLiked] = useState(false)
 
 
     return (
         <TouchableOpacity>
-        <View style={styles.container}>
+        
+        <ImageBackground style={styles.container} source={{uri: `https://image.tmdb.org/t/p/w500${poster}`}} >
             <View style={styles.imdbContainer} >
             <Image
                 source={images.IMDB}
                         resizeMode="cover"
-                        style={styles.imdbImage}   />
-                <Text style={styles.imdbRating}> 9.9</Text>
+                        style={styles.imdbImage}  
+             />
+            
+            <Text style={styles.imdbRating}>{voteAverage}</Text>
          </View>
+         {/* <Image
+                source={{ uri: `https://image.tmdb.org/t/p/w500${poster}` }}
+                resizeMode="cover"
+                style={styles.posterImage}
+            /> */}
          <TouchableOpacity onPress={() => setLiked(!liked)}>
          <Ionicons
           name={liked ? "heart" : "heart-outline"} 
@@ -26,20 +35,20 @@ const MovieCard =() => {
          color={liked ? Colors.HEART : Colors.WHITE}
          style={{position:"absolute", bottom:-310, left:0 }} />
          </TouchableOpacity>
-        </View>
+        </ImageBackground>
         <View>
             <Text style={styles.movieTitle} numberOfLines={2} >
-             URl - One Piece
+             {title}
               </Text>
             <View style={styles.movieSubtitleContainer} >
-                <Text style={styles.movieSubtitle}>JAPAN | (U/A) </Text>
+                <Text style={styles.movieSubtitle}>{language} | (U/A) </Text>
                 <View style={styles.rowAndCenter}>
                 <Ionicons name="heart"
                  size={17} 
                  color={Colors.HEART}
                  style={{ marginRight:5}}
                  />
-                    <Text style={styles.movieSubtitle}> 90%</Text>
+                    <Text style={styles.movieSubtitle}> {voteCount}</Text>
                 </View>
             </View>
         </View>
@@ -95,7 +104,13 @@ const styles = StyleSheet.create({
         marginRight:5,
         color: Colors.HEART,
         fontFamily: fonts.EXTRA_BOLD,
-    }
+    },
+    posterImage: {
+        height: 340,
+        width: 210,
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12,
+      },
 });
 
 export default MovieCard;

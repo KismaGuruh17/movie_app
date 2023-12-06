@@ -6,7 +6,7 @@ const MovieScreen =() =>{
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <text>Movie Screen</text>
+      <Text>Movie Screen</Text>
     </View>
   );
 }

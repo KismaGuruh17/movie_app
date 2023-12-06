@@ -6,20 +6,32 @@ import fonts from '../constans/fonts';
 import GenreCard from '../components/GenreCard';
 import MovieCard from '../components/MovieCard';
 import ItemSeparator from '../components/ItemSeparator';
-import { getNowPlayingMovies } from '../services/MovieService';
 
 
 
 const Genres = ["All", "Action", "Romance", "Horror", "Sci-fi"];
 
-const HomeScreen =() => {
-  const [activeGenre, setActiveGenre] = useState("all");
+const HomeScreen = () => {
+  const [activeGenre, setActiveGenre] = useState("All"); 
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
-  
-  useEffect(() => { getNowPlayingMovies().then(movieResponse => 
-    setNowPlayingMovies(movieResponse.data))
+  const [isLoading, setLoading] = useState(true);
+
+  const getDatas = async () => {
+    try {
+      const response = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=61b93257091c63f99ac3b8eca0c97863');
+
+      const json = await response.json();
+      setNowPlayingMovies(json.results); 
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getDatas();
   }, []);
-  
 
   return (
     <ScrollView style={styles.container}>
@@ -33,7 +45,7 @@ const HomeScreen =() => {
     </View>
       <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>Movie</Text>
-        <Text style={styles.headerSubtitle}>VIEW ALL</Text>
+        {/* <Text style={styles.headerSubtitle}>VIEW ALL</Text> */}
       </View>
       <View style={styles.genreListContainer}>
         <FlatList 
@@ -55,15 +67,23 @@ const HomeScreen =() => {
       </View>
       <View>
       <FlatList
-          data={Genres} 
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => item.toString()}
-          ItemSeparatorComponent={() => <ItemSeparator width={20} />}
-          ListHeaderComponent={() => <ItemSeparator width={20} />}
-          ListFooterComponent={() => <ItemSeparator width={20} />}
-          renderItem={({ item }) => <MovieCard data={item} />} 
-        />
+        data={nowPlayingMovies} // Use nowPlayingMovies instead of Genres
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id.toString()} 
+        ItemSeparatorComponent={() => <ItemSeparator width={20} />}
+        ListHeaderComponent={() => <ItemSeparator width={20} />}
+        ListFooterComponent={() => <ItemSeparator width={20} />}
+        renderItem={({ item }) => (
+          <MovieCard
+            title={item.title}
+            language={item.original_language}
+            voteAverage={item.vote_average}
+            voteCount={item.vote_count}
+            poster={item.poster_path}
+          />
+        )}
+      />
       </View>
     </ScrollView>
   );

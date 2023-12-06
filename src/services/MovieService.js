@@ -1,21 +1,16 @@
-import axios from 'axios';
+const axios = require("axios").default;
+import { TMDB_BASE_URL, TMDB_API_KEY, ENDPOINTS, TMDB_IMAGE_BASE_URL } from '../constans/Urls';
 
-const API_KEY = '61b93257091c63f99ac3b8eca0c97863'; 
-const BASE_URL = 'https://api.themoviedb.org/3';
+const TMDB_HTTP_REQUEST = axios.create({
+    baseURL: TMDB_BASE_URL,
+    params: {
+        api_key: TMDB_API_KEY,
+    },
+});
 
-export const getNowPlayingMovies = async () => {
-  try {
-    const response = await axios.get(`${BASE_URL}/movie/now_playing`, {
-      params: {
-        api_key: API_KEY,
-        language: 'en-US', 
-        page: 1, 
-      },
-    });
+const getNowPlayingMovies = () =>
+    TMDB_HTTP_REQUEST.get(ENDPOINTS.NOW_PLAYING_MOVIES);
 
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching now playing movies:', error);
-    throw error;
-  }
-};
+const getPoster = (path) => `${TMDB_IMAGE_BASE_URL}/original${path}`;
+
+export { getNowPlayingMovies, getPoster };
