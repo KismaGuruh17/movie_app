@@ -16,7 +16,8 @@ const HomeScreen =() => {
   const [activeGenre, setActiveGenre] = useState("all");
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
   
-  useEffect(() => { getNowPlayingMovies().then(movieResponse => setNowPlayingMovies(movieResponse.data))
+  useEffect(() => { getNowPlayingMovies().then(movieResponse => 
+    setNowPlayingMovies(movieResponse.data))
   }, []);
   
 
@@ -61,7 +62,7 @@ const HomeScreen =() => {
           ItemSeparatorComponent={() => <ItemSeparator width={20} />}
           ListHeaderComponent={() => <ItemSeparator width={20} />}
           ListFooterComponent={() => <ItemSeparator width={20} />}
-          renderItem={({ item }) => <MovieCard data={item} />} // Pass movie data to MovieCard
+          renderItem={({ item }) => <MovieCard data={item} />} 
         />
       </View>
     </ScrollView>
