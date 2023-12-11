@@ -7,8 +7,6 @@ import GenreCard from '../components/GenreCard';
 import MovieCard from '../components/MovieCard';
 import ItemSeparator from '../components/ItemSeparator';
 
-
-
 const Genres = ["All", "Action", "Romance", "Horror", "Sci-fi"];
 
 const HomeScreen = () => {
@@ -19,7 +17,6 @@ const HomeScreen = () => {
   const getDatas = async () => {
     try {
       const response = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=61b93257091c63f99ac3b8eca0c97863');
-
       const json = await response.json();
       setNowPlayingMovies(json.results); 
     } catch (error) {
@@ -67,7 +64,7 @@ const HomeScreen = () => {
       </View>
       <View>
       <FlatList
-        data={nowPlayingMovies} // Use nowPlayingMovies instead of Genres
+        data={nowPlayingMovies} 
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id.toString()} 
