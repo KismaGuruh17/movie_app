@@ -6,14 +6,16 @@ import fonts from '../constans/fonts';
 import GenreCard from '../components/GenreCard';
 import MovieCard from '../components/MovieCard';
 import ItemSeparator from '../components/ItemSeparator';
+//import { getNowPlayingMovies, getUpcomingMovies, getAllGenres, } from '../services/MovieService';
 
 
 
 const Genres = ["All", "Action", "Romance", "Horror", "Sci-fi"];
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [activeGenre, setActiveGenre] = useState("All"); 
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
+  //const [UpcomingMovies, setUpcomingMovies] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
   const getDatas = async () => {
@@ -81,6 +83,36 @@ const HomeScreen = () => {
             voteAverage={item.vote_average}
             voteCount={item.vote_count}
             poster={item.poster_path}
+            heartLess={false}
+            onPress={() => NavigationPreloadManager.navigate("movie", { movieId: item.id})}
+          />
+        )}
+      />
+      </View>
+
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerTitle}>Coming Soon</Text>
+        <Text style={styles.headerSubTitle}>VIEW ALL</Text>
+      </View>
+      <View>
+      <FlatList
+        data={nowPlayingMovies}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id.toString()} 
+        ItemSeparatorComponent={() => <ItemSeparator width={20} />}
+        ListHeaderComponent={() => <ItemSeparator width={20} />}
+        ListFooterComponent={() => <ItemSeparator width={20} />}
+        renderItem={({ item }) => (
+          <MovieCard
+            title={item.title}
+            language={item.original_language}
+            voteAverage={item.vote_average}
+            voteCount={item.vote_count}
+            poster={item.poster_path}
+            size={0.7}
+            onPress={() => NavigationPreloadManager.navigate("movie", { movieId: item.id})}
+
           />
         )}
       />
@@ -88,6 +120,7 @@ const HomeScreen = () => {
     </ScrollView>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
