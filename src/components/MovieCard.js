@@ -8,11 +8,8 @@ import images from "../constans/images";
 
 const MovieCard =({title, language, voteAverage, voteCount,poster}) => {
     const [liked, setLiked] = useState(false)
-
-
     return (
         <TouchableOpacity>
-        
         <ImageBackground style={styles.container} source={{uri: `https://image.tmdb.org/t/p/w500${poster}`}} >
             <View style={styles.imdbContainer} >
             <Image
@@ -20,14 +17,8 @@ const MovieCard =({title, language, voteAverage, voteCount,poster}) => {
                         resizeMode="cover"
                         style={styles.imdbImage}  
              />
-            
             <Text style={styles.imdbRating}>{voteAverage}</Text>
          </View>
-         {/* <Image
-                source={{ uri: `https://image.tmdb.org/t/p/w500${poster}` }}
-                resizeMode="cover"
-                style={styles.posterImage}
-            /> */}
          <TouchableOpacity onPress={() => setLiked(!liked)}>
          <Ionicons
           name={liked ? "heart" : "heart-outline"} 
@@ -105,12 +96,6 @@ const styles = StyleSheet.create({
         color: Colors.HEART,
         fontFamily: fonts.EXTRA_BOLD,
     },
-    posterImage: {
-        height: 340,
-        width: 210,
-        borderTopLeftRadius: 12,
-        borderTopRightRadius: 12,
-      },
 });
 
 export default MovieCard;
