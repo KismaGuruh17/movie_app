@@ -15,7 +15,7 @@ const Genres = ["All", "Action", "Romance", "Horror", "Sci-fi"];
 const HomeScreen = ({ navigation }) => {
   const [activeGenre, setActiveGenre] = useState("All"); 
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
-  //const [UpcomingMovies, setUpcomingMovies] = useState([]);
+  const [UpcomingMovies, setUpcomingMovies] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
   const getDatas = async () => {
@@ -24,6 +24,7 @@ const HomeScreen = ({ navigation }) => {
 
       const json = await response.json();
       setNowPlayingMovies(json.results); 
+      setUpcomingMovies(json.results);
     } catch (error) {
       console.error(error);
     } finally {
@@ -34,7 +35,6 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     getDatas();
   }, []);
-
   return (
     <ScrollView style={styles.container}>
       <StatusBar 
@@ -96,7 +96,7 @@ const HomeScreen = ({ navigation }) => {
       </View>
       <View>
       <FlatList
-        data={nowPlayingMovies}
+        data={UpcomingMovies}
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id.toString()} 
