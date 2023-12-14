@@ -6,8 +6,10 @@ import { Ionicons } from '@expo/vector-icons';
 import images from "../constans/images";
 
 
-const MovieCard =({title, language, voteAverage, voteCount,poster}) => {
+const MovieCard =({title, language, voteAverage, voteCount, poster, heartLess}) => {
     const [liked, setLiked] = useState(false)
+    const [voteCountValue, setVoteCountValue] = useState(voteCount);
+    
     return (
         <TouchableOpacity>
         <ImageBackground style={styles.container} source={{uri: `https://image.tmdb.org/t/p/w500${poster}`}} >
@@ -19,13 +21,20 @@ const MovieCard =({title, language, voteAverage, voteCount,poster}) => {
              />
             <Text style={styles.imdbRating}>{voteAverage}</Text>
          </View>
-         <TouchableOpacity onPress={() => setLiked(!liked)}>
+         {!heartLess ? (
+         <TouchableOpacity onPress={() => {
+            setLiked(!liked);
+            setVoteCountValue(
+              liked ? voteCountValue - 1 : voteCountValue + 1
+            ); }}
+            >
          <Ionicons
           name={liked ? "heart" : "heart-outline"} 
          size={25} 
          color={liked ? Colors.HEART : Colors.WHITE}
          style={{position:"absolute", bottom:-310, left:0 }} />
          </TouchableOpacity>
+         ): null}
         </ImageBackground>
         <View>
             <Text style={styles.movieTitle} numberOfLines={2} >
@@ -97,5 +106,9 @@ const styles = StyleSheet.create({
         fontFamily: fonts.EXTRA_BOLD,
     },
 });
+MovieCard.defaultProps = {
+    size: 1,
+    heartLess: true,
+  };
 
 export default MovieCard;
