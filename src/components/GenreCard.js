@@ -1,6 +1,7 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet, Dimensions} from "react-native";
 import Colors from "../constans/Colors";
+//import fonts from "../constans/fonts";
 
 const {width} = Dimensions.get("screen");
 const setWidth = (w) => (width / 100) * w;
@@ -35,6 +36,7 @@ const GenreCard = ({genreName, active, onPress}) => {
     genreText :{
         fontSize: 13,
         color: Colors.ACTIVE,
+        //fontFamily: fonts.BOLD
     },
 });
 

@@ -6,7 +6,7 @@ import fonts from '../constans/fonts';
 import GenreCard from '../components/GenreCard';
 import MovieCard from '../components/MovieCard';
 import ItemSeparator from '../components/ItemSeparator';
-//import { getNowPlayingMovies, getUpcomingMovies, getAllGenres, } from '../services/MovieService';
+//import { getNowPlayingMovies, getUpcomingMovies, getAllGenres } from '../services/MovieService';
 
 const Genres = ["All", "Action", "Romance", "Horror", "Sci-fi"];
 
@@ -14,6 +14,7 @@ const HomeScreen = ({ navigation }) => {
   const [activeGenre, setActiveGenre] = useState("All"); 
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
   const [UpcomingMovies, setUpcomingMovies] = useState([]);
+  //const [genres, setGenres] = useState([{ id: 10110, name: "All" }]);
   const [isLoading, setLoading] = useState(true);
 
   const getDatas = async () => {
@@ -22,6 +23,7 @@ const HomeScreen = ({ navigation }) => {
       const json = await response.json();
       setNowPlayingMovies(json.results); 
       setUpcomingMovies(json.results);
+      //setGenres(json.results);
     } catch (error) {
       console.error(error);
     } finally {
