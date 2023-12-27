@@ -28,5 +28,8 @@
   "devDependencies": {
     "@babel/core": "^7.20.0"
   },
-  "private": true
+  "private": true,
+  "projectConfig": {
+    "apiKey": "<put the api key from tmdb here>"
+  }
 }

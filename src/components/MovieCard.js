@@ -6,12 +6,12 @@ import { Ionicons } from '@expo/vector-icons';
 import images from "../constans/images";
 
 
-const MovieCard =({title, language, voteAverage, voteCount, poster, heartLess}) => {
+const MovieCard =({title, language, voteAverage, voteCount, poster, heartLess, onPress}) => {
     const [liked, setLiked] = useState(false)
     const [voteCountValue, setVoteCountValue] = useState(voteCount);
     
     return (
-        <TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
         <ImageBackground style={styles.container} source={{uri: `https://image.tmdb.org/t/p/w500${poster}`}} >
             <View style={styles.imdbContainer} >
             <Image
