@@ -1,5 +1,5 @@
 const axios = require("axios").default;
-import { TMDB_BASE_URL, TMDB_API_KEY, ENDPOINTS, TMDB_IMAGE_BASE_URL } from '../constans/Urls';
+import { TMDB_BASE_URL, TMDB_API_KEY, ENDPOINTS, TMDB_IMAGE_BASE_URL, YOUTUBE_BASE_URL } from '../constans/Urls';
 
 const TMDB_HTTP_REQUEST = axios.create({
     baseURL: TMDB_BASE_URL,
@@ -19,4 +19,4 @@ const getUpcomingMovies = () =>
 
 const getPoster = (path) => `${TMDB_IMAGE_BASE_URL}/original${path}`;
 
-export { getNowPlayingMovies, getUpcomingMovies, getAllGenres, getPoster };
+export { getNowPlayingMovies, getUpcomingMovies, getAllGenres, getPoster,  getMovieById };

@@ -2,11 +2,12 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const MovieScreen =() =>{
+const MovieScreen =({route, navigation}) =>{
+  const {movieId} = route.params
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Text>Movie Screen</Text>
+      <Text>Movie Screen : {movieId}</Text>
     </View>
   );
 };
