@@ -63,15 +63,18 @@ const MovieScreen = ({ route, navigation }) => {
         <Text style={styles.title}>Cast:</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {castData.map((cast) => (
-            <View key={cast.id} style={styles.castContainer}>
-              <Image
-                source={{
-                  uri: `https://image.tmdb.org/t/p/w200${cast.profile_path}`,
-                }}
-                style={styles.castImage}
-              />
-              <Text style={styles.castName}>{cast.name}</Text>
-            </View>
+            // menambah pengecekan untuk menampilkan gambar cast yang memiliki path
+            cast.profile_path && (
+              <View key={cast.id} style={styles.castContainer}>
+                <Image
+                  source={{
+                    uri: `https://image.tmdb.org/t/p/w200${cast.profile_path}`,
+                  }}
+                  style={styles.castImage}
+                />
+                <Text style={styles.castName}>{cast.name}</Text>
+              </View>
+            )
           ))}
         </ScrollView>
       </ScrollView>
