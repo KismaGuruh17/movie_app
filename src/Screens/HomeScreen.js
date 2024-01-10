@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, FlatList, Modal, Pressable, TextInput  } from 'react-native';
 import Colors from '../constans/Colors';
 import fonts from '../constans/fonts';
 import GenreCard from '../components/GenreCard';
@@ -15,6 +15,10 @@ const HomeScreen = ({ navigation }) => {
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  // const [modalVisible, setModalVisible] = useState(true);
+
+  // const [inputName, setInputName] = useState('')
+
 
   const getDatas = async () => {
     try {
@@ -37,6 +41,21 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     getDatas();
   }, []);
+
+  // const addData = () => {
+  //   setModalVisible(true)
+  // }
+
+  // const saveData = async () => {
+  //   try {
+  //     const payload = {
+  //       name: 'This is my awesome test list.',
+  //       description: 'Just an awesome list.',
+  //       language: 'en'
+  //     }
+    //}
+    //const response = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=61b93257091c63f99ac3b8eca0c97863')
+  //}
 
   return (
     <ScrollView style={styles.container}>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
+import Colors from '../constans/Colors';
 
 const MovieScreen = ({ route, navigation }) => {
   const { movieId } = route.params;
@@ -46,7 +47,7 @@ const MovieScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.tombolKembali} onPress={() => navigation.goBack()}>
-        <Ionicons name="ios-arrow-back" size={30} color="#000000" />
+        <Ionicons name="ios-arrow-back" size={30} color="#FFFFFF" />
       </TouchableOpacity>
 
       <ScrollView style={styles.scrollContainer}>
@@ -87,7 +88,7 @@ const MovieScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.BLACK,
     padding: 16,
   },
   tombolKembali: {
@@ -116,11 +117,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
     textAlign: 'center',
+    color: Colors.WHITE,
   },
   description: {
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 16,
+    color: Colors.WHITE,
   },
   castContainer: {
     marginRight: 10,
@@ -134,6 +137,7 @@ const styles = StyleSheet.create({
   },
   castName: {
     textAlign: 'center',
+    color: Colors.WHITE,
   },
 });
 
