@@ -61,6 +61,10 @@ const MovieScreen = ({ route, navigation }) => {
         <Text style={styles.title}>{movieData.title}</Text>
         <Text style={styles.description}>{movieData.overview}</Text>
 
+        <View style={styles.overviewContainer}>
+          <Text style={styles.overviewTitle}>overview</Text>
+          <Text style={styles.overviewText}>{movie?.overview}</Text>
+        </View>  
         <Text style={styles.title}>Cast:</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {castData.map((cast) => (
@@ -138,6 +142,15 @@ const styles = StyleSheet.create({
   castName: {
     textAlign: 'center',
     color: Colors.WHITE,
+  },
+  overviewContainer: {
+    backgroundColor: Colors.EXTRA_LIGHT_GRAY,
+  },
+  overviewText: {
+
+  },
+  overviewText: {
+
   },
 });
 
