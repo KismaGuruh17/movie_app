@@ -42,7 +42,6 @@ const MovieScreen = ({ route }) => {
         <Text style={styles.voteAverage}>{`Vote Average: ${movieData.vote_average}`}</Text> 
         <Text style={styles.voteCount}>{`Vote Count: ${movieData.vote_count}`}</Text> 
       </View>
-
     </ScrollView>
   );
 };

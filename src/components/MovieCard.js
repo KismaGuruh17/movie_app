@@ -12,6 +12,10 @@ const MovieCard =({title, language, voteAverage, voteCount, poster, heartLess, o
         />
         <View style={styles.contentContainer}>
           <Text style={styles.title}>{title}</Text>
+          <Text style={styles.language}>{`Language: ${language}`}</Text> 
+          <Text style={styles.voteAverage}>{`Vote Average: ${voteAverage}`}</Text> 
+          <Text style={styles.voteCount}>{`Vote Count: ${voteCount}`}</Text>
+
           {heartLess && (
             <FontAwesome name="heart-o" size={20} color="red" style={styles.heartIcon} />
           )}
@@ -51,6 +55,24 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'white',
   },
+  voteAverage: { 
+    fontSize: 14, 
+    color: 'white', 
+    }, 
+    voteCount: { 
+    fontSize: 14, 
+    color: 'white', 
+    }, 
+    heartIcon: { 
+    position: 'absolute', 
+    top: 10, 
+    right: 10, 
+    }, 
+    deleteButton: { 
+    position: 'absolute', 
+    top: 10, 
+    right: 10, 
+    },    
 });
  
 export default MovieCard;
