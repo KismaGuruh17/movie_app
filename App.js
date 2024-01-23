@@ -1,13 +1,13 @@
 import React from "react";
-import {NavigationContainer} from"@react-navigation/native";
-import{createStackNavigator} from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./src/Screens/HomeScreen";
 import MovieScreen from "./src/Screens/MovieScreen";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
-
-const Stack =createStackNavigator();
-
+ 
+const Stack = createStackNavigator();
+ 
 export default () => {
   const [fontLoaded] = useFonts({
     Regular: require("./assets/fonts/NunitoSans_10pt-Regular.ttf"),
@@ -18,24 +18,24 @@ export default () => {
     Light: require("./assets/fonts/NunitoSans_10pt-Light.ttf"),
     SemiBold: require("./assets/fonts/NunitoSans_10pt-SemiBold.ttf"),
   });
-
+ 
   return fontLoaded ? (
     <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-           name="homescreen"
-           component={HomeScreen} 
-           options={{headerShown: false}}
-           />
-          <Stack.Screen 
-          name="movie" 
+      <Stack.Navigator>
+        <Stack.Screen
+          name="homeScreen"
+          component={HomeScreen}
+          options={{ headerShown: false }} // Hide header on HomeScreen
+        />
+        <Stack.Screen
+          name="movie"
           component={MovieScreen}
-          options={{headerShown: false}}
-          />
-        </Stack.Navigator>
+          options={{ headerShown: true }} // Show header on MovieScreen
+        />
+      </Stack.Navigator>
     </NavigationContainer>
-    ) : (
-      <AppLoading />
+  ) : (
+    <AppLoading />
   );
 };
 
