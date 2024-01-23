@@ -1,28 +1,30 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, ScrollView, FlatList, Modal, Pressable, TextInput  } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, ScrollView, FlatList, Modal, Pressable, TextInput, Button, ActivityIndicator } from 'react-native';
 import Colors from '../constans/Colors';
 import fonts from '../constans/fonts';
 import GenreCard from '../components/GenreCard';
 import MovieCard from '../components/MovieCard';
 import ItemSeparator from '../components/ItemSeparator';
-//import { getNowPlayingMovies, getUpcomingMovies, getAllGenres, } from '../services/MovieService';
+import { useNavigation } from '@react-navigation/native';
 
 const Genres = ["All", "Action", "Romance", "Horror", "Sci-fi"];
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
+  const navigation = useNavigation();
   const [activeGenre, setActiveGenre] = useState("All");
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  // const [modalVisible, setModalVisible] = useState(true);
-
-  // const [inputName, setInputName] = useState('')
-
+  const [newMovieTitle, setNewMovieTitle] = useState('');
+  const [newMovieLanguage, setNewMovieLanguage] = useState('');
+  const [newMovieVoteAverage, setNewMovieVoteAverage] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [error, setError] = useState('');
 
   const getDatas = async () => {
     try {
-      // Simulate a loading delay of 10 seconds
+      // Simulate a loading delay of 2 seconds
       setTimeout(async () => {
         const response = await fetch(
           'https://api.themoviedb.org/3/movie/now_playing?api_key=61b93257091c63f99ac3b8eca0c97863'
@@ -30,11 +32,11 @@ const HomeScreen = ({ navigation }) => {
         const json = await response.json();
         setNowPlayingMovies(json.results);
         setUpcomingMovies(json.results);
-        setLoading(false); // Set loading to false after data fetching is complete
-      }, 2000); // 2 seconds delay
+        setLoading(false);
+      }, 2000);
     } catch (error) {
       console.error(error);
-      setLoading(false); // Set loading to false even if an error occurs
+      setLoading(false);
     }
   };
 
@@ -42,20 +44,26 @@ const HomeScreen = ({ navigation }) => {
     getDatas();
   }, []);
 
-  // const addData = () => {
-  //   setModalVisible(true)
-  // }
+  
+  const createMovie = (newMovieData) => {
+    const updatedNowPlayingMovies = [...nowPlayingMovies];
+    updatedNowPlayingMovies.push({
+      id: Date.now(),
+      title: newMovieData.title,
+      original_language: newMovieData.language,
+      vote_average: newMovieData.voteAverage,
+    });
+    setNowPlayingMovies(updatedNowPlayingMovies);
+    setModalVisible(false);
+    setNewMovieTitle('');
+    setNewMovieLanguage('');
+    setNewMovieVoteAverage('');
+  };
 
-  // const saveData = async () => {
-  //   try {
-  //     const payload = {
-  //       name: 'This is my awesome test list.',
-  //       description: 'Just an awesome list.',
-  //       language: 'en'
-  //     }
-    //}
-    //const response = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=61b93257091c63f99ac3b8eca0c97863')
-  //}
+  const handleDeleteMovie = (movieId) => {
+    const updatedMovies = nowPlayingMovies.filter((movie) => movie.id !== movieId);
+    setNowPlayingMovies(updatedMovies);
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -69,17 +77,14 @@ const HomeScreen = ({ navigation }) => {
       </View>
       <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>Movie</Text>
-        {/* <Text style={styles.headerSubtitle}>VIEW ALL</Text> */}
       </View>
       <View style={styles.genreListContainer}>
+        {/* Tambahkan FlatList atau komponen lain untuk menampilkan genre */}
         <FlatList
           data={Genres}
           horizontal
           showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => item}
-          ItemSeparatorComponent={() => <ItemSeparator width={20} />}
-          ListHeaderComponent={() => <ItemSeparator width={20} />}
-          ListFooterComponent={() => <ItemSeparator width={20} />}
+          keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <GenreCard
               genreName={item}
@@ -95,7 +100,6 @@ const HomeScreen = ({ navigation }) => {
         </Text>
       ) : (
         <View>
-          {/* Now Playing Movies */}
           <FlatList
             data={nowPlayingMovies}
             horizontal
@@ -113,41 +117,61 @@ const HomeScreen = ({ navigation }) => {
                 poster={item.poster_path}
                 heartLess={false}
                 onPress={() => navigation.navigate("movie", { movieId: item.id })}
-              />
-            )}
-          />
-
-          {/* Coming Soon Movies */}
-          <View style={styles.headerContainer}>
-            <Text style={styles.headerTitle}>Coming Soon</Text>
-            <Text style={styles.headerSubTitle}>VIEW ALL</Text>
-          </View>
-          <FlatList
-            data={upcomingMovies}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.id.toString()}
-            ItemSeparatorComponent={() => <ItemSeparator width={20} />}
-            ListHeaderComponent={() => <ItemSeparator width={20} />}
-            ListFooterComponent={() => <ItemSeparator width={20} />}
-            renderItem={({ item }) => (
-              <MovieCard
-                title={item.title}
-                language={item.original_language}
-                voteAverage={item.vote_average}
-                voteCount={item.vote_count}
-                poster={item.poster_path}
-                size={0.7}
-                onPress={() => navigation.navigate("movie", { movieId: item.id })}
+                onDelete={() => handleDeleteMovie(item.id)}
               />
             )}
           />
         </View>
       )}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(!modalVisible)}
+      >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.WHITE, padding: 20 }}>
+          <TextInput
+            placeholder="Title"
+            value={newMovieTitle}
+            onChangeText={(text) => setNewMovieTitle(text)}
+          />
+          <TextInput
+            placeholder="Language"
+            value={newMovieLanguage}
+            onChangeText={(text) => setNewMovieLanguage(text)}
+          />
+          <TextInput
+            placeholder="Vote Average"
+            value={newMovieVoteAverage}
+            onChangeText={(text) => setNewMovieVoteAverage(text)}
+          />
+          <Pressable
+            style={{ backgroundColor: Colors.WHITE, padding: 10, margin: 10, borderRadius: 5 }}
+            onPress={() => {
+              createMovie({
+                title: newMovieTitle,
+                language: newMovieLanguage,
+                voteAverage: parseFloat(newMovieVoteAverage),
+              });
+            }}
+          >
+            <Text>Tambah Film</Text>
+          </Pressable>
+          <Button
+            title="Tutup Modal"
+            onPress={() => {
+              setModalVisible(!modalVisible);
+              setNewMovieTitle('');
+              setNewMovieLanguage('');
+              setNewMovieVoteAverage('');
+            }}
+          />
+        </View>
+      </Modal>
+      <Button title="Tambah Film" onPress={() => setModalVisible(true)} />
     </ScrollView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -155,25 +179,19 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BLACK,
   },
   headerContainer: {
-    flexDirection:"row",
-    justifyContent:"space-between",
-    alignItems:"center",
-    paddingHorizontal:20,
-    paddingVertical:10,
-  },
-  headerTitle:{
-    fontSize:28,
-    fontFamily: fonts.REGULAR,
-    color:Colors.WHITE,
-  },
-  headerSubtitle:{
-    fontSize:13,
-    color:Colors.WHITE,
-    fontFamily:fonts.BOLD,
-  },
-  genreListContainer:{
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
     paddingVertical: 10,
-
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontFamily: fonts.REGULAR,
+    color: Colors.WHITE,
+  },
+  genreListContainer: {
+    paddingVertical: 10,
   },
 });
 
