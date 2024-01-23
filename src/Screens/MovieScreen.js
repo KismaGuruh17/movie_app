@@ -33,6 +33,16 @@ const MovieScreen = ({ route }) => {
         source={{ uri: `https://image.tmdb.org/t/p/w500${movieData.poster_path}` }}
         style={styles.posterImage}
       />
+      <View style={styles.contentContainer}> 
+        <Text style={styles.title}>{movieData.title}</Text> 
+        <Text style={styles.subtitle}>{`Language: ${movieData.original_language}`}</Text> 
+        <Text style={styles.subtitle}>{`Release Date: ${movieData.release_date}`}</Text> 
+        <Text style={styles.overviewTitle}>Overview:</Text> 
+        <Text style={styles.overviewText}>{movieData.overview}</Text> 
+        <Text style={styles.voteAverage}>{`Vote Average: ${movieData.vote_average}`}</Text> 
+        <Text style={styles.voteCount}>{`Vote Count: ${movieData.vote_count}`}</Text> 
+      </View>
+
     </ScrollView>
   );
 };
@@ -65,6 +75,28 @@ const styles = StyleSheet.create({
     color: 'white',
     marginBottom: 4,
   },
+  overviewTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  overviewText: {
+    fontSize: 16,
+    color: 'white',
+    marginBottom: 8,
+  },
+  voteAverage: {
+    fontSize: 16,
+    color: 'white',
+    marginBottom: 4,
+  },
+  voteCount: {
+    fontSize: 16,
+    color: 'white',
+    marginBottom: 12,
+  },
 });
  
 export default MovieScreen;
