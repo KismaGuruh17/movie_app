@@ -24,7 +24,7 @@ const HomeScreen = () => {
 
   const getDatas = async () => {
     try {
-      // Simulate a loading delay of 2 seconds
+      // loading delay  2 detik
       setTimeout(async () => {
         const response = await fetch(
           'https://api.themoviedb.org/3/movie/now_playing?api_key=61b93257091c63f99ac3b8eca0c97863'
@@ -44,7 +44,6 @@ const HomeScreen = () => {
     getDatas();
   }, []);
 
-  
   const createMovie = (newMovieData) => {
     const updatedNowPlayingMovies = [...nowPlayingMovies];
     updatedNowPlayingMovies.push({
@@ -65,6 +64,21 @@ const HomeScreen = () => {
     setNowPlayingMovies(updatedMovies);
   };
 
+  const handleEditMovie = (movieId) => {
+    const movieToEdit = nowPlayingMovies.find((movie) => movie.id === movieId);
+    if (movieToEdit) {
+      // masuk ke dalam modal
+      setNewMovieTitle(movieToEdit.title);
+      setNewMovieLanguage(movieToEdit.original_language);
+      setNewMovieVoteAverage(movieToEdit.vote_average.toString());
+      setModalVisible(true);
+
+      //update data movie
+      const updatedMovies = nowPlayingMovies.filter((movie) => movie.id !== movieId);
+      setNowPlayingMovies(updatedMovies);
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       <StatusBar
@@ -72,14 +86,10 @@ const HomeScreen = () => {
         translucent={false}
         backgroundColor={Colors.BASIC_BACKGROUND}
       />
-      <View style={styles.container}>
-        {/* Konten aplikasi lainnya akan ditempatkan di sini */}
-      </View>
       <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>Movie</Text>
       </View>
       <View style={styles.genreListContainer}>
-        {/* Tambahkan FlatList atau komponen lain untuk menampilkan genre */}
         <FlatList
           data={Genres}
           horizontal
@@ -96,7 +106,7 @@ const HomeScreen = () => {
       </View>
       {isLoading ? (
         <Text style={{ color: Colors.WHITE, fontSize: 18, alignSelf: 'center', marginTop: 20 }}>
-          Loading...
+          Nungguin Yaaaa...
         </Text>
       ) : (
         <View>
@@ -118,6 +128,7 @@ const HomeScreen = () => {
                 heartLess={false}
                 onPress={() => navigation.navigate("movie", { movieId: item.id })}
                 onDelete={() => handleDeleteMovie(item.id)}
+                onEdit={() => handleEditMovie(item.id)}
               />
             )}
           />
@@ -192,6 +203,11 @@ const styles = StyleSheet.create({
   },
   genreListContainer: {
     paddingVertical: 10,
+  },
+  editButton: {
+    color: Colors.WHITE,
+    fontSize: 16,
+    marginTop: 5,
   },
 });
 

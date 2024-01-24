@@ -25,12 +25,12 @@ export default () => {
         <Stack.Screen
           name="homeScreen"
           component={HomeScreen}
-          options={{ headerShown: false }} // Hide header on HomeScreen
+          options={{ headerShown: false }} // menghilangkan header di homescreen
         />
         <Stack.Screen
           name="movie"
           component={MovieScreen}
-          options={{ headerShown: true }} // Show header on MovieScreen
+          options={{ headerShown: true }} // menampilkan header di moviescreen
         />
       </Stack.Navigator>
     </NavigationContainer>

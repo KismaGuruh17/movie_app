@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons'; // Pastikan sudah di-import
+import { FontAwesome } from '@expo/vector-icons'; 
+// import { VscEdit } from "react-icons/vsc";
  
-const MovieCard =({title, language, voteAverage, voteCount, poster, heartLess, onPress, onDelete}) => {
+const MovieCard =({title, language, voteAverage, voteCount, poster, heartLess, onPress, onDelete, onEdit}) => {
   return (
     <Pressable onPress={onPress}>
       <View style={styles.cardContainer}>
@@ -16,12 +17,17 @@ const MovieCard =({title, language, voteAverage, voteCount, poster, heartLess, o
           <Text style={styles.voteAverage}>{`Vote Average: ${voteAverage}`}</Text> 
           <Text style={styles.voteCount}>{`Vote Count: ${voteCount}`}</Text>
 
-          {heartLess && (
+          {/* {heartLess && (
             <FontAwesome name="heart-o" size={20} color="red" style={styles.heartIcon} />
-          )}
+          )} */}
           {onDelete && (
             <Pressable style={styles.deleteButton} onPress={onDelete}>
               <FontAwesome name="trash" size={20} color="white" />
+            </Pressable>
+          )}
+           {onEdit && (
+            <Pressable style={styles.editButton} on onPress={onEdit}>
+              <FontAwesome name="edit" size={20} color="white"/>
             </Pressable>
           )}
         </View>
@@ -72,7 +78,13 @@ const styles = StyleSheet.create({
     position: 'absolute', 
     top: 10, 
     right: 10, 
-    },    
+    },  
+    editButton: { 
+      position: 'absolute', 
+      bottom: 10, 
+      right: 10, 
+      },  
+
 });
  
 export default MovieCard;
