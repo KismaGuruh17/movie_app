@@ -8,19 +8,14 @@ import MovieCard from '../components/MovieCard';
 import ItemSeparator from '../components/ItemSeparator';
 import { useNavigation } from '@react-navigation/native';
 
-const Genres = ["All", "Action", "Romance", "Horror", "Sci-fi"];
-
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const [activeGenre, setActiveGenre] = useState("All");
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
-  const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [newMovieTitle, setNewMovieTitle] = useState('');
   const [newMovieLanguage, setNewMovieLanguage] = useState('');
   const [newMovieVoteAverage, setNewMovieVoteAverage] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [error, setError] = useState('');
 
   const getDatas = async () => {
     try {
@@ -31,7 +26,6 @@ const HomeScreen = () => {
         );
         const json = await response.json();
         setNowPlayingMovies(json.results);
-        setUpcomingMovies(json.results);
         setLoading(false);
       }, 2000);
     } catch (error) {
@@ -86,53 +80,32 @@ const HomeScreen = () => {
         translucent={false}
         backgroundColor={Colors.BASIC_BACKGROUND}
       />
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerTitle}>Movie</Text>
-      </View>
-      <View style={styles.genreListContainer}>
-        <FlatList
-          data={Genres}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <GenreCard
-              genreName={item}
-              active={item === activeGenre ? true : false}
-              onPress={() => setActiveGenre(item)}
-            />
-          )}
-        />
-      </View>
       {isLoading ? (
         <Text style={{ color: Colors.WHITE, fontSize: 18, alignSelf: 'center', marginTop: 20 }}>
           Nungguin Yaaaa...
         </Text>
       ) : (
-        <View>
-          <FlatList
-            data={nowPlayingMovies}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.id.toString()}
-            ItemSeparatorComponent={() => <ItemSeparator width={20} />}
-            ListHeaderComponent={() => <ItemSeparator width={20} />}
-            ListFooterComponent={() => <ItemSeparator width={20} />}
-            renderItem={({ item }) => (
-              <MovieCard
-                title={item.title}
-                language={item.original_language}
-                voteAverage={item.vote_average}
-                voteCount={item.vote_count}
-                poster={item.poster_path}
-                heartLess={false}
-                onPress={() => navigation.navigate("movie", { movieId: item.id })}
-                onDelete={() => handleDeleteMovie(item.id)}
-                onEdit={() => handleEditMovie(item.id)}
-              />
-            )}
-          />
-        </View>
+        <FlatList
+          data={nowPlayingMovies}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item) => item.id.toString()}
+          ItemSeparatorComponent={() => <ItemSeparator width={20} />}
+          ListHeaderComponent={() => <ItemSeparator width={20} />}
+          ListFooterComponent={() => <ItemSeparator width={20} />}
+          renderItem={({ item }) => (
+            <MovieCard
+              title={item.title}
+              language={item.original_language}
+              voteAverage={item.vote_average}
+              voteCount={item.vote_count}
+              poster={item.poster_path}
+              heartLess={false}
+              onPress={() => navigation.navigate("movie", { movieId: item.id })}
+              onDelete={() => handleDeleteMovie(item.id)}
+              onEdit={() => handleEditMovie(item.id)}
+            />
+          )}
+        />
       )}
       <Modal
         animationType="slide"
@@ -187,27 +160,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.BLACK,
-  },
-  headerContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  headerTitle: {
-    fontSize: 28,
-    fontFamily: fonts.REGULAR,
-    color: Colors.WHITE,
-  },
-  genreListContainer: {
-    paddingVertical: 10,
-  },
-  editButton: {
-    color: Colors.WHITE,
-    fontSize: 16,
-    marginTop: 5,
+    backgroundColor: Colors.WHITE,
   },
 });
 
